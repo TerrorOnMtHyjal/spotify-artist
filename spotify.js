@@ -1,7 +1,7 @@
-var getFromApi = function(endpoint, query) {
+const getFromAPI = function(endpoint, query) {
     const url = new URL(`https://api.spotify.com/v1/${endpoint}`);
     Object.keys(query).forEach(key => url.searchParams.append(key, query[key]));
-    return fetch(url).then(function(response) {
+    return fetch(url).then(response => {
         if (!response.ok) {
             return Promise.reject(response.statusText);
         }
@@ -10,7 +10,16 @@ var getFromApi = function(endpoint, query) {
 };
 
 
-var artist;
-var getArtist = function(name) {
-    // Edit me!
+let artist;
+const getArtist = name => {
+    const query = {
+        q: "Celine Dion",
+        limit: 1,
+        type: "artist"
+    }
+
+    return getFromAPI("search", query).then(result =>{
+      artist = result.artists.items[0];
+      return artist;  
+    }).catch(error => {console.log("WHAT THE HELL IS THIS", error)});
 };
